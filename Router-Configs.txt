@@ -1,0 +1,752 @@
+
+
+      |\      _,,,---,,_
+ZZZzz /,`.-'`'    -.  ;-;;,_
+     |,4-  ) )-,_. ,\ (  `'-'
+    '---''(_/--'  `-'\_)
+
+Welcome to the Calico Core! Authorized access only.
+
+
+
+User Access Verification
+
+Username: admin
+Password:
+ISP-RT>en
+Password:
+ISP-RT#terminal length 512
+ISP-RT#show running-config
+Building configuration...
+
+
+
+Current configuration : 2836 bytes
+!
+! Last configuration change at 04:21:39 UTC Mon Aug 4 2025 by admin
+!
+version 15.7
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+!
+hostname ISP-RT
+!
+boot-start-marker
+boot-end-marker
+!
+!
+card type t1 0 0
+enable secret 5 $1$cFQG$ntQkmhzVN8bSfcTiWYs29/
+!
+no aaa new-model
+no network-clock-participate wic 0
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+
+
+!
+!
+!
+!
+ip domain name alamo.edu
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+voice-card 0
+!
+!
+!
+!
+!
+!
+!
+!
+vxml logging-tag
+license udi pid CISCO2911/K9 sn FTX1431A2J7
+license boot module c2900 technology-package securityk9
+license boot module c2900 technology-package uck9
+license boot module c2900 technology-package datak9
+!
+!
+username admin secret 5 $1$yIn1$vnfTkfYtkyNLUCa2pXZDm.
+!
+redundancy
+!
+!
+!
+!
+!
+controller T1 0/0/0
+ cablelength long 0db
+ channel-group 0 timeslots 1-24
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback1
+ description DNS
+ ip address 8.8.8.8 255.255.255.255
+!
+interface Loopback2
+ description www.alamo.edu
+ ip address 50.50.50.50 255.255.255.255
+!
+interface Embedded-Service-Engine0/0
+ no ip address
+ shutdown
+!
+interface GigabitEthernet0/0
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/1
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/2
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+!
+interface Serial0/0/0:0
+ no ip address
+!
+interface Serial0/2/0
+ no ip address
+ shutdown
+ clock rate 2000000
+!
+interface Serial0/2/1
+ description IPS-RT-2-DR
+ ip address 172.18.37.5 255.255.255.252
+ clock rate 2000000
+!
+interface Serial0/3/0
+ no ip address
+ shutdown
+ clock rate 2000000
+!
+interface Serial0/3/1
+ description ISP-RT-2-HQ
+ ip address 172.18.37.1 255.255.255.252
+ clock rate 2000000
+!
+!
+!
+router eigrp 100
+ network 8.8.8.8 0.0.0.0
+ network 50.50.50.50 0.0.0.0
+ network 172.18.37.0 0.0.0.3
+ network 172.18.37.4 0.0.0.3
+!
+ip forward-protocol nd
+!
+no ip http server
+no ip http secure-server
+!
+ip ssh version 2
+!
+ipv6 ioam timestamp
+!
+!
+!
+control-plane
+!
+ !
+ !
+ !
+ !
+!
+mgcp behavior rsip-range tgcp-only
+mgcp behavior comedia-role none
+mgcp behavior comedia-check-media-src disable
+mgcp behavior comedia-sdp-force disable
+!
+mgcp profile default
+!
+!
+!
+!
+!
+!
+!
+gatekeeper
+ shutdown
+!
+banner motd ^C
+
+      |\      _,,,---,,_
+ZZZzz /,`.-'`'    -.  ;-;;,_
+     |,4-  ) )-,_. ,\ (  `'-'
+    '---''(_/--'  `-'\_)
+
+Welcome to the Calico Core! Authorized access only.
+
+^C
+!
+line con 0
+ password 7 070C2E425D061500
+ login local
+line aux 0
+ password 7 141A1D0F0909
+ login local
+line 2
+ no activation-character
+ no exec
+ transport preferred none
+ transport output pad telnet rlogin lapb-ta mop udptn v120 ssh
+ stopbits 1
+line vty 0 4
+ password 7 111B1C0818060E
+ login local
+ transport input ssh
+!
+scheduler allocate 20000 1000
+!
+end
+
+ISP-RT#ssh -l admin 172.18.36.3
+Password:
+
+************************************************************
+*   WARNING: Unauthorized access to this device is          *
+*   strictly prohibited. All activities are monitored and   *
+*   logged. By accessing this system, you consent to        *
+*   such monitoring. Disconnect immediately if you are not  *
+*   an authorized user.                                     *
+************************************************************
+
+DR>en
+Password:
+DR#terminal length 512
+DR#show running-config
+Building configuration...
+
+
+
+Current configuration : 3676 bytes
+!
+! Last configuration change at 04:34:13 UTC Mon Aug 4 2025 by admin
+!
+version 15.7
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+!
+hostname DR
+!
+boot-start-marker
+boot-end-marker
+!
+!
+card type t1 0 0
+enable secret 5 $1$reJG$JE8Au2x8cMoZxS/mIeYqa1
+!
+no aaa new-model
+no network-clock-participate wic 0
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+
+
+!
+!
+!
+!
+ip domain name alamo.edu
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+voice-card 0
+!
+!
+!
+!
+!
+!
+!
+!
+vxml logging-tag
+license udi pid CISCO2911/K9 sn FJC2037A04R
+license boot module c2900 technology-package securityk9
+license boot module c2900 technology-package uck9
+license boot module c2900 technology-package datak9
+!
+!
+username admin secret 5 $1$6niq$vV8MFD5EB6y0GbkrNxUoQ0
+!
+redundancy
+!
+!
+!
+!
+!
+controller T1 0/0/0
+ cablelength long 0db
+ channel-group 0 timeslots 1-24
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Embedded-Service-Engine0/0
+ no ip address
+ shutdown
+!
+interface GigabitEthernet0/0
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/1
+ description DR-2-MLS1
+ no ip address
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/1.5
+ description VLAN5
+ encapsulation dot1Q 5
+ ip address 172.18.36.3 255.255.255.192
+ standby 5 ip 172.18.36.1
+ standby 5 priority 105
+ standby 5 preempt
+!
+interface GigabitEthernet0/1.10
+ description VLAN10
+ encapsulation dot1Q 10
+ ip address 172.18.16.3 255.255.240.0
+ standby 10 ip 172.18.16.1
+ standby 10 priority 105
+ standby 10 preempt
+!
+interface GigabitEthernet0/1.15
+ description VLAN15
+ encapsulation dot1Q 15
+ ip address 172.18.32.3 255.255.252.0
+ standby 15 ip 172.18.32.1
+ standby 15 priority 105
+ standby 15 preempt
+!
+interface GigabitEthernet0/2
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+!
+interface Serial0/0/0:0
+ no ip address
+!
+interface Serial0/2/0
+ description DR-2-ISP-RT
+ ip address 172.18.37.6 255.255.255.252
+!
+interface Serial0/2/1
+ no ip address
+ shutdown
+ clock rate 2000000
+!
+interface Serial0/3/0
+ no ip address
+ shutdown
+ clock rate 2000000
+!
+interface Serial0/3/1
+ no ip address
+ shutdown
+ clock rate 2000000
+!
+!
+!
+router eigrp 100
+ network 172.18.16.0 0.0.15.255
+ network 172.18.32.0 0.0.3.255
+ network 172.18.36.0 0.0.0.63
+ network 172.18.37.4 0.0.0.3
+!
+ip forward-protocol nd
+!
+no ip http server
+no ip http secure-server
+!
+ip ssh version 2
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr aes128-cbc aes192-cbc aes256-cbc 3des-cbc
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr aes128-cbc aes192-cbc aes256-cbc 3des-cbc
+!
+ipv6 ioam timestamp
+!
+!
+!
+control-plane
+!
+ !
+ !
+ !
+ !
+!
+mgcp behavior rsip-range tgcp-only
+mgcp behavior comedia-role none
+mgcp behavior comedia-check-media-src disable
+mgcp behavior comedia-sdp-force disable
+!
+mgcp profile default
+!
+!
+!
+!
+!
+!
+!
+gatekeeper
+ shutdown
+!
+banner motd ^C
+************************************************************
+*   WARNING: Unauthorized access to this device is          *
+*   strictly prohibited. All activities are monitored and   *
+*   logged. By accessing this system, you consent to        *
+*   such monitoring. Disconnect immediately if you are not  *
+*   an authorized user.                                     *
+************************************************************
+^C
+!
+line con 0
+ password 7 121A0A1901040001
+ login local
+line aux 0
+ password 7 130818160E01
+ login local
+line 2
+ no activation-character
+ no exec
+ transport preferred none
+ transport output pad telnet rlogin lapb-ta mop udptn v120 ssh
+ stopbits 1
+line vty 0 4
+ password 7 08334943060D00
+ login local
+ transport input ssh
+!
+scheduler allocate 20000 1000
+!
+end
+
+DR#ssh -l admin 172.18.32.2
+Password:
+
+************************************************************
+*   WARNING: Unauthorized access to this device is          *
+*   strictly prohibited. All activities are monitored and   *
+*   logged. By accessing this system, you consent to        *
+*   such monitoring. Disconnect immediately if you are not  *
+*   an authorized user.                                     *
+************************************************************
+
+HQ>en
+Password:
+HQ#terminal length 512
+HQ#show running-config
+Building configuration...
+
+
+
+Current configuration : 3454 bytes
+!
+! Last configuration change at 04:30:53 UTC Mon Aug 4 2025 by admin
+!
+version 15.7
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+!
+hostname HQ
+!
+boot-start-marker
+boot-end-marker
+!
+!
+card type t1 0 0
+enable secret 5 $1$mwYH$jG5f5KOXKCM0FV1eVgiuS/
+!
+no aaa new-model
+no network-clock-participate wic 0
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+
+
+!
+!
+!
+!
+ip domain name alamo.edu
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+voice-card 0
+!
+!
+!
+!
+!
+!
+!
+!
+vxml logging-tag
+license udi pid CISCO2911/K9 sn FGL2146825Z
+license boot module c2900 technology-package securityk9
+license boot module c2900 technology-package uck9
+license boot module c2900 technology-package datak9
+!
+!
+username admin secret 5 $1$uc86$Dlpc3HfL4fU9Z7j1cHHZb0
+!
+redundancy
+!
+!
+!
+!
+!
+controller T1 0/0/0
+ cablelength long 0db
+ channel-group 0 timeslots 1-24
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Embedded-Service-Engine0/0
+ no ip address
+ shutdown
+!
+interface GigabitEthernet0/0
+ description HQ-MLS1
+ no ip address
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/0.5
+ description VLAN5
+ encapsulation dot1Q 5
+ ip address 172.18.36.2 255.255.255.192
+ standby 5 ip 172.18.36.1
+ standby 5 priority 110
+ standby 5 preempt
+!
+interface GigabitEthernet0/0.10
+ description VLAN10
+ encapsulation dot1Q 10
+ ip address 172.18.16.2 255.255.240.0
+ standby 10 ip 172.18.16.1
+ standby 10 priority 110
+ standby 10 preempt
+!
+interface GigabitEthernet0/0.15
+ description VLAN15
+ encapsulation dot1Q 15
+ ip address 172.18.32.2 255.255.252.0
+ standby 15 ip 172.18.32.1
+ standby 15 priority 110
+ standby 15 preempt
+!
+interface GigabitEthernet0/1
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/2
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+!
+interface Serial0/0/0:0
+ no ip address
+!
+interface Serial0/2/0
+ no ip address
+ shutdown
+ clock rate 2000000
+!
+interface Serial0/2/1
+ no ip address
+ shutdown
+ clock rate 2000000
+!
+interface Serial0/3/0
+ description HQ-2-ISP-RT
+ ip address 172.18.37.2 255.255.255.252
+!
+interface Serial0/3/1
+ no ip address
+ shutdown
+ clock rate 2000000
+!
+!
+!
+router eigrp 100
+ network 172.18.16.0 0.0.15.255
+ network 172.18.32.0 0.0.3.255
+ network 172.18.36.0 0.0.0.63
+ network 172.18.37.0 0.0.0.3
+!
+ip forward-protocol nd
+!
+no ip http server
+no ip http secure-server
+!
+ip ssh version 2
+!
+ipv6 ioam timestamp
+!
+!
+!
+control-plane
+!
+ !
+ !
+ !
+ !
+!
+mgcp behavior rsip-range tgcp-only
+mgcp behavior comedia-role none
+mgcp behavior comedia-check-media-src disable
+mgcp behavior comedia-sdp-force disable
+!
+mgcp profile default
+!
+!
+!
+!
+!
+!
+!
+gatekeeper
+ shutdown
+!
+banner motd ^C
+************************************************************
+*   WARNING: Unauthorized access to this device is          *
+*   strictly prohibited. All activities are monitored and   *
+*   logged. By accessing this system, you consent to        *
+*   such monitoring. Disconnect immediately if you are not  *
+*   an authorized user.                                     *
+************************************************************
+^C
+!
+line con 0
+ password 7 121A0A1901040001
+ login local
+line aux 0
+ password 7 020B0B5F0E0B
+ login local
+line 2
+ no activation-character
+ no exec
+ transport preferred none
+ transport output pad telnet rlogin lapb-ta mop udptn v120 ssh
+ stopbits 1
+line vty 0 4
+ password 7 051903022E584B
+ login local
+ transport input ssh
+!
+scheduler allocate 20000 1000
+!
+end
+
+HQ#
